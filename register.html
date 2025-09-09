@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kapé — Register</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="page-register">
+
+  <header>
+    <nav class="nav container" aria-label="Main">
+      <div class="nav-left">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="brews.html">Brew Guides</a>
+      </div>
+      <a class="brand" href="index.html" aria-label="Kapé brand">Kapé</a>
+      <div class="nav-right" style="justify-content:flex-end">
+        <a aria-current="page" href="register.html">Register</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero hero--plain" style="min-height:40vh;">
+    <div class="container" style="max-width:900px">
+      <h1>Join our Kapé community</h1>
+      <p>Get brew guides, product drops, and special offers straight to your inbox.</p>
+    </div>
+  </section>
+
+  <main>
+    <section id="lead-capture" class="lead-capture">
+      <div class="container">
+        <form class="lead-form" method="post" action="#">
+          <div class="grid two-col">
+            <div class="field">
+              <label for="first_name">First name</label>
+              <input id="first_name" name="first_name" type="text" autocomplete="given-name" required>
+            </div>
+            <div class="field">
+              <label for="last_name">Last name</label>
+              <input id="last_name" name="last_name" type="text" autocomplete="family-name" required>
+            </div>
+          </div>
+
+          <div class="grid two-col">
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="phone">Phone (optional)</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="address1">Street address</label>
+            <input id="address1" name="address1" type="text" autocomplete="address-line1" required>
+          </div>
+
+          <div class="field">
+            <label for="address2">Apt, suite, etc. (optional)</label>
+            <input id="address2" name="address2" type="text" autocomplete="address-line2">
+          </div>
+
+          <div class="grid three-col">
+            <div class="field">
+              <label for="city">City</label>
+              <input id="city" name="city" type="text" autocomplete="address-level2" required>
+            </div>
+            <div class="field">
+              <label for="state">State/Province</label>
+              <input id="state" name="state" type="text" autocomplete="address-level1" required>
+            </div>
+            <div class="field">
+              <label for="postal">ZIP/Postal code</label>
+              <input id="postal" name="postal" type="text" autocomplete="postal-code" required>
+            </div>
+          </div>
+
+          <div class="grid two-col">
+            <div class="field">
+              <label for="country">Country</label>
+              <select id="country" name="country" autocomplete="country-name" required>
+                <option value="">Select a country</option>
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="PH">Philippines</option>
+                <option value="GB">United Kingdom</option>
+                <option value="AU">Australia</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="interest">What are you interested in?</label>
+              <select id="interest" name="interest">
+                <option value="">Choose one</option>
+                <option value="beans">Coffee drops</option>
+                <option value="pop-ups">Pop-ups & Events</option>
+                <option value="recipes">Recipes</option>
+                <option value="all">All of the above</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="message">Anything else?</label>
+            <textarea id="message" name="message" rows="4" placeholder="Tell us your brew setup or favorite flavors…"></textarea>
+          </div>
+
+          <div class="consent">
+            <label class="checkbox">
+              <input type="checkbox" name="consent" required>
+              <span>I agree to receive email updates from Kapé.</span>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn">Sign me up</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container foot-grid">
+      <div><h3 class="bigbrand">Kapé</h3></div>
+      <div class="foot-cols">
+        <div class="foot">
+          <h4>Location</h4>
+          <p style="margin:.3rem 0 .1rem">1234 Orange Ave<br>Orlando, FL 32801</p>
+        </div>
+        <div class="foot">
+          <p style="margin:.3rem 0">
+            <a href="index.html">Home</a><br>
+            <a href="about.html">About</a><br>
+            <a href="brews.html">Brew guide</a><br>
+            <a href="register.html" aria-current="page">Register</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
