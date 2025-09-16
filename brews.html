@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kapé — Brewing Guides</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header>
+    <nav class="nav container" aria-label="Main">
+      <div class="nav-left">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a aria-current="page" href="brews.html">Brew Guides</a>
+      </div>
+      <a class="brand" href="index.html" aria-label="Kapé brand">Kapé</a>
+      <div class="nav-right">
+        <a href="register.html">Register</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero hero--short">
+    <div class="container container--narrow">
+      <h1>Brewing Guides</h1>
+      <p>Dial in great flavor at home — from pour-over to espresso.</p>
+    </div>
+  </section>
+
+  <main class="band">
+    <div class="container">
+      <div class="cards cards--three">
+        <article class="card">
+          <h3>V60 Pour-over</h3>
+          <ul class="specs">
+            <li><strong>Ratio:</strong> 1:16 (20g coffee : 320g water)</li>
+            <li><strong>Grind:</strong> Medium-fine (table salt)</li>
+            <li><strong>Time:</strong> ~3:00</li>
+          </ul>
+          <ol class="notes" style="text-align:left">
+            <li>Rinse filter and preheat funnel. Add grounds and bloom with 40g water (45s).</li>
+            <li>Pour in just-off-boiling water in slow circles to 200g, then to 320g by 2:00.</li>
+            <li>Swirl gently, let drawdown finish around 3:00.</li>
+          </ol>
+        </article>
+
+        <article class="card">
+          <h3>French Press</h3>
+          <ul class="specs">
+            <li><strong>Ratio:</strong> 1:15 (30g : 450g)</li>
+            <li><strong>Grind:</strong> Coarse</li>
+            <li><strong>Time:</strong> 4:00</li>
+          </ul>
+          <ol class="notes" style="text-align:left">
+            <li>Add coffee and hot water, stir, and place lid on top.</li>
+            <li>At 4:00, break crust, skim foam, and press plunger down slowly.</li>
+            <li>Serve immediately.</li>
+          </ol>
+        </article>
+
+        <article class="card">
+          <h3>Espresso (baseline)</h3>
+          <ul class="specs">
+            <li><strong>Ratio:</strong> 1:2 (18g in → 36g out)</li>
+            <li><strong>Grind:</strong> Fine</li>
+            <li><strong>Time:</strong> 27–32s</li>
+          </ul>
+          <ol class="notes" style="text-align:left">
+            <li>Grind fine, distribute, tamp level.</li>
+            <li>Pull shot; adjust grind for time window. Too fast? Grind finer. Too slow? Grind coarser.</li>
+            <li>Too sour? Lower dose slightly. Too bitter? Increase dose slightly.</li>
+          </ol>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container foot-grid">
+      <div><h3 class="bigbrand">Kapé</h3></div>
+      <div class="foot-cols">
+        <div class="foot">
+          <h4>Location</h4>
+          <p class="address">1234 Orange Ave<br>Orlando, FL 32801</p>
+        </div>
+        <div class="foot">
+          <p>
+            <a href="index.html">Home</a><br>
+            <a href="about.html">About</a><br>
+            <a href="brews.html" aria-current="page">Brew guide</a><br>
+            <a href="signin.html">Sign in</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kapé — Sign in</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="page-register">
+  <header>
+    <nav class="nav container" aria-label="Main">
+      <div class="nav-left">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="brews.html">Brew Guides</a>
+      </div>
+      <a class="brand" href="index.html" aria-label="Kapé brand">Kapé</a>
+      <div class="nav-right" style="justify-content:flex-end">
+        <a href="register.html">Register</a>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero hero--plain" style="min-height:40vh;">
+    <div class="container" style="max-width:900px">
+      <h1>Sign in</h1>
+      <p>Welcome back—sign in to manage your account and orders.</p>
+    </div>
+  </section>
+
+  <main>
+    <section class="lead-capture">
+      <div class="container">
+        <form class="lead-form" id="signin-form" action="#" method="post">
+          <div class="grid two-col">
+            <div class="field">
+              <label for="signin_email">Email</label>
+              <input id="signin_email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="signin_password">Password</label>
+              <input id="signin_password" name="password" type="password" required>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn">Sign in</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container foot-grid">
+      <div><h3 class="bigbrand">Kapé</h3></div>
+      <div class="foot-cols">
+        <div class="foot">
+          <h4>Location</h4>
+          <p class="address">1234 Orange Ave<br>Orlando, FL 32801</p>
+        </div>
+        <div class="foot">
+          <p>
+            <a href="index.html">Home</a><br>
+            <a href="about.html">About</a><br>
+            <a href="brews.html">Brew guide</a><br>
+            <a href="signin.html" aria-current="page">Sign in</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
