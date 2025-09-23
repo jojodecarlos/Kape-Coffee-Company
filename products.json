@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Bayani Blend",
+    "notes": "Milk Chocolate · Candied Walnuts · Biscoff Cookies",
+    "origin": "Benguet, Philippines",
+    "roast": "Medium",
+    "image": "Images/kape%20bag-final.png",
+    "alt": "Kapé Bayani Blend bag"
+  },
+  {
+    "name": "Maganda Blend",
+    "notes": "Mangosteen · Lychee · Juicy & Citrus Finish",
+    "origin": "Sagada, Philippines",
+    "roast": "Light",
+    "image": "Images/kape%20bag-final.png",
+    "alt": "Kapé Maganda Blend bag"
+  }
+]
