@@ -1,4 +1,4 @@
-// app.js — Kapé frontend behavior (module)
+
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
@@ -9,17 +9,39 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 
-const q = (sel, root = document) => root.querySelector(sel);
+const $ = (sel, root = document) => root.querySelector(sel);
+const setText = (el, text) => { if (el) el.textContent = text; };
+const setStatus = (id, msg) => { const el = document.getElementById(id); if (el) el.textContent = msg || ''; };
+
+
+async function getSession() {
+  const { data } = await supabase.auth.getSession();
+  return data.session || null;
+}
+
+async function requireAuth() {
+  const session = await getSession();
+  if (!session) {
+    window.location.href = 'signin.html';
+    return null;
+  }
+  return session;
+}
+
+async function signOut() {
+  await supabase.auth.signOut();
+  window.location.href = 'signin.html';
+}
 
 
 function initRegisterFlow() {
-  // Only bind on the Register page (uses the .page-register body class + .lead-form)
-  const form = q('.page-register form.lead-form');
-  if (!form) return;
+  const form = $('.page-register form.lead-form');
+  if (!form || window.location.pathname.endsWith('/profile.html')) return; // not on profile
 
   const get = (id) => form.querySelector(`#${id}`);
 
   form.addEventListener('submit', async (e) => {
+    if (!window.location.pathname.endsWith('/register.html')) return;
     e.preventDefault();
 
     const email = get('email')?.value.trim();
@@ -36,25 +58,20 @@ function initRegisterFlow() {
       return;
     }
 
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-
         emailRedirectTo: `${window.location.origin}/signin.html`,
       },
     });
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
+    if (error) return alert(error.message);
 
-
-    const user = data.user;
-    if (user) {
+    if (data.session && data.user) {
       const payload = {
-        user_id: user.id,
+        user_id: data.user.id,
         first_name: get('first_name')?.value || null,
         last_name: get('last_name')?.value || null,
         phone: get('phone')?.value || null,
@@ -65,14 +82,9 @@ function initRegisterFlow() {
         interest: get('interest')?.value || null,
         message: get('message')?.value || null,
       };
-
       const { error: pErr } = await supabase.from('profiles').insert(payload);
-      if (pErr) {
-        alert(pErr.message);
-        return;
-      }
+      if (pErr) return alert(pErr.message);
     }
-
 
     alert('Account created! Check your email to verify (if required), then sign in.');
     window.location.href = 'signin.html';
@@ -80,46 +92,127 @@ function initRegisterFlow() {
 }
 
 
-function initRegisterValidation() {
-  const form = q('.page-register form.lead-form');
-  if (!form) return;
-
-  const password = q('#password', form);
-  const confirm = q('#confirm_password', form);
-  if (password && confirm) {
-    form.addEventListener('submit', (e) => {
-      if (password.value !== confirm.value) {
-        e.preventDefault();
-        alert('Passwords do not match. Please re-enter.');
-        confirm.focus();
-      }
-    });
+async function ensureProfileExists(session) {
+  const user = session?.user;
+  if (!user) return;
+  const { data, error } = await supabase.from('profiles').select('user_id').eq('user_id', user.id).maybeSingle();
+  if (error) return; // ignore
+  if (!data) {
+    // create an empty profile row owned by the user
+    await supabase.from('profiles').insert({ user_id: user.id });
   }
 }
 
 
 function initSignInFlow() {
-  const form = q('#signin-form');
+  const form = $('#signin-form');
   if (!form) return;
 
-  const emailEl = q('#signin_email', form);
-  const passEl = q('#signin_password', form);
+  const emailEl = $('#signin_email', form);
+  const passEl = $('#signin_password', form);
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: emailEl.value.trim(),
+      password: passEl.value
+    });
+    if (error) return alert(error.message);
 
-    const email = emailEl?.value.trim();
-    const password = passEl?.value || '';
+    if (data.session) await ensureProfileExists(data.session);
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      alert(error.message);
-      return;
-    }
+    window.location.href = 'profile.html';
+  });
+}
 
-    alert('Signed in!');
-    // Redirect somewhere useful (home for now)
-    window.location.href = 'index.html';
+
+async function initProfileDashboard() {
+  if (!window.location.pathname.endsWith('/profile.html')) return;
+
+  const session = await requireAuth();
+  if (!session) return;
+
+  const user = session.user;
+  setText($('#profile-email'), `Signed in as ${user.email || ''}`);
+
+  $('#signout-btn')?.addEventListener('click', async () => { await signOut(); });
+
+  const { data: prof, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (error) setStatus('profile-status', error.message);
+
+
+  if (!prof) {
+    await supabase.from('profiles').insert({ user_id: user.id });
+  }
+
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+
+  const form = $('#profile-form');
+  const fill = (id, v) => { const el = $(`#${id}`, form); if (el) el.value = v || ''; };
+  fill('first_name', profile?.first_name);
+  fill('last_name', profile?.last_name);
+  fill('phone', profile?.phone);
+  fill('address', profile?.address);
+  fill('city', profile?.city);
+  fill('postal', profile?.postal);
+  fill('country', profile?.country);
+  fill('interest', profile?.interest);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    setStatus('profile-status', 'Saving...');
+    const payload = {
+      first_name: $('#first_name', form)?.value || null,
+      last_name: $('#last_name', form)?.value || null,
+      phone: $('#phone', form)?.value || null,
+      address: $('#address', form)?.value || null,
+      city: $('#city', form)?.value || null,
+      postal: $('#postal', form)?.value || null,
+      country: $('#country', form)?.value || null,
+      interest: $('#interest', form)?.value || null,
+      updated_at: new Date().toISOString(),
+    };
+    const { error: upErr } = await supabase
+      .from('profiles')
+      .update(payload)
+      .eq('user_id', user.id);
+    if (upErr) return setStatus('profile-status', upErr.message);
+    setStatus('profile-status', 'Profile saved.');
+  });
+
+
+  const pwForm = $('#password-form');
+  pwForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    setStatus('password-status', 'Updating password...');
+    const oldPw = $('#old_password', pwForm).value;
+    const newPw = $('#new_password', pwForm).value;
+    const newPw2 = $('#new_password_confirm', pwForm).value;
+    if (newPw.length < 8) return setStatus('password-status', 'New password must be at least 8 characters.');
+    if (newPw !== newPw2) return setStatus('password-status', 'New passwords do not match.');
+
+
+    const email = user.email;
+    const { error: reauthErr } = await supabase.auth.signInWithPassword({ email, password: oldPw });
+    if (reauthErr) return setStatus('password-status', 'Current password is incorrect.');
+
+
+    const { error: updErr } = await supabase.auth.updateUser({ password: newPw });
+    if (updErr) return setStatus('password-status', updErr.message);
+
+    setStatus('password-status', 'Password updated successfully.');
+
   });
 }
 
@@ -155,7 +248,7 @@ async function initDynamicProducts() {
 
   try {
     const res = await fetch('products.json', { cache: 'no-store' });
-    if (!res.ok) return; // keep original static HTML as-is
+    if (!res.ok) return;
     const products = await res.json();
     if (!Array.isArray(products) || !products.length) return;
 
@@ -184,15 +277,16 @@ async function initDynamicProducts() {
 
     grid.innerHTML = html;
     initRevealAnimations(grid);
-  } catch (_) {
-    // If JSON fails, we keep the static HTML
-  }
+  } catch (_) { /* keep static HTML */ }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  initRegisterValidation();
+
+document.addEventListener('DOMContentLoaded', async () => {
   initRegisterFlow();
   initSignInFlow();
   initRevealAnimations();
   initDynamicProducts();
+
+
+  await initProfileDashboard();
 });
